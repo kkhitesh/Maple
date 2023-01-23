@@ -4,14 +4,17 @@ import { Main } from "./pages/Main";
 import { Login } from "./pages/Login";
 import { Navbar } from "./components/Navbar";
 import { CreatePost } from "./pages/CreatePost";
+import { Sidebar } from "./components/Sidebar";
+import { Home } from "./pages/Home";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App h-[100vh] flex text-slate-800">
       <Router>
-        <Navbar />
+        {/* <Navbar /> */}
+        <Sidebar />
         <Routes>
-          <Route path="/" element={<Main />} />
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/create" element={<CreatePost />} />
         </Routes>
