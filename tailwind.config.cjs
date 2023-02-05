@@ -14,6 +14,13 @@ module.exports = {
       fontFamily: {
         Montez: ["Montez", "cursive"],
       },
+      keyframes: {
+        shimmer: {
+          "100%": {
+            transform: "translateX(100%)",
+          },
+        },
+      },
     },
   },
   plugins: [],

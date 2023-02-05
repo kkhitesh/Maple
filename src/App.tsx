@@ -9,7 +9,7 @@ import { Home } from "./pages/Home";
 
 function App() {
   return (
-    <div className="App h-[100vh] flex text-slate-800">
+    <div className="App flex h-[100vh] overflow-hidden text-slate-800">
       <Router>
         {/* <Navbar /> */}
         <Sidebar />
