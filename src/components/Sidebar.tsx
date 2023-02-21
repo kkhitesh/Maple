@@ -17,7 +17,7 @@ import { signOut } from "firebase/auth";
 
 const signUserOut = () => {
   console.log("signing out");
-  // signOut(auth);
+  signOut(auth);
 };
 
 export const Sidebar = () => {
@@ -45,7 +45,7 @@ export const Sidebar = () => {
           Home
         </Link>
         <Link
-          to="/"
+          to="/explore"
           className="mt-2 flex w-max items-center gap-3 p-3 pr-10 hover:rounded-full hover:bg-[rgba(0,0,0,5%)]"
         >
           <BiSearch />

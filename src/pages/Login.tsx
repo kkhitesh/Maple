@@ -1,12 +1,25 @@
-import { auth, provider } from "../config/firebase";
+import { auth, db, provider } from "../config/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { addDoc, collection } from "firebase/firestore";
 
 export const Login = () => {
   const nav = useNavigate();
+  const usersRef = collection(db, "users");
+
+  const addUser = async () => {
+    const res = await addDoc(usersRef, {
+      username: auth.currentUser?.displayName,
+      userId: auth.currentUser?.uid,
+      userImg: auth.currentUser?.photoURL,
+      bio: "Welcome to my Profile",
+    });
+    console.log(res);
+  };
 
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider);
+    addUser();
     nav("/");
   };
 

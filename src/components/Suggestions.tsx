@@ -15,19 +15,23 @@ const RecProfile = () => {
   );
 };
 
+console.log(window.location.pathname);
+
 export const Suggestions = () => {
   return (
     <div className="mr-10 w-1/3 p-4">
-      <div className="flex items-center justify-around ">
-        <div className="flex w-full items-center gap-3 rounded-full bg-[rgba(0,0,0,5%)] px-4 py-3">
-          <BiSearch className="text-2xl text-[rgba(0,0,0,40%)]" />
-          <input
-            type="text"
-            placeholder="Search"
-            className="bg-transparent focus:outline-none"
-          />
+      {window.location.pathname !== "/explore" && (
+        <div className="flex items-center justify-around ">
+          <div className="flex w-full items-center gap-3 rounded-full bg-[rgba(0,0,0,5%)] px-4 py-3">
+            <BiSearch className="text-2xl text-[rgba(0,0,0,40%)]" />
+            <input
+              type="text"
+              placeholder="Search"
+              className="bg-transparent focus:outline-none"
+            />
+          </div>
         </div>
-      </div>
+      )}
       <div className="mt-4 w-full rounded-xl bg-[rgba(0,0,0,3%)]">
         <h2 className="px-4 py-2 text-xl font-bold ">Who to Follow</h2>
         <RecProfile />

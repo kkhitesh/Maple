@@ -1,5 +1,7 @@
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import React, { useState } from "react";
 import { BiPlus, BiPlusCircle } from "react-icons/bi";
+import { db } from "../config/firebase";
 
 interface Props {
   showModal: boolean;
@@ -10,6 +12,27 @@ interface Props {
 
 const Modal = (props: Props) => {
   const { showModal, setShowModal, onClose, user } = props;
+  const [loading, setLoading] = useState(false);
+  const [caption, setCaption] = useState("");
+  const postsRef = collection(db, "posts");
+
+  const uploadPost = async () => {
+    setLoading(true);
+    const res = await addDoc(postsRef, {
+      caption: caption,
+      username: user?.displayName,
+      userId: user?.uid,
+      userImg: user?.photoURL,
+      timestamp: serverTimestamp(),
+      likes: [],
+      comments: [],
+    });
+    console.log("Posted Successfully", res.id);
+    setCaption("");
+    setLoading(false);
+    setShowModal(false);
+  };
+
   return (
     <>
       {showModal ? (
@@ -41,6 +64,8 @@ const Modal = (props: Props) => {
                   placeholder="What's on your mind?"
                   className="w-full border-transparent caret-brand/60 focus:border-transparent focus:outline-none focus:ring-0"
                   autoFocus={true}
+                  value={caption}
+                  onChange={(e) => setCaption(e.target.value)}
                 />
               </div>
               <div className="flex items-center justify-between p-6">
@@ -54,9 +79,9 @@ const Modal = (props: Props) => {
                 <button
                   className="mr-1 mb-1 rounded-full bg-brand px-6 py-3 text-sm font-bold uppercase text-white shadow outline-none hover:shadow-lg focus:outline-none active:bg-yellow-700"
                   type="button"
-                  onClick={() => setShowModal(false)}
+                  onClick={uploadPost}
                 >
-                  Post
+                  {loading ? "Posting..." : "Post"}
                 </button>
               </div>
             </div>
