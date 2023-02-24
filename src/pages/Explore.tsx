@@ -11,7 +11,6 @@ import { LoadingPost } from "../components/LoadingPost";
 import { Post } from "../components/Post";
 import { Suggestions } from "../components/Suggestions";
 import { db } from "../config/firebase";
-
 interface Post {
   id: string;
   username: string;
@@ -32,11 +31,9 @@ export const Explore = () => {
     );
   }, [db]);
 
-  console.log(posts);
-
   return (
     <div className="flex w-full">
-      <div className="w-2/3 overflow-y-scroll border-2">
+      <div className="w-full overflow-y-scroll border-2 lg:w-2/3">
         <h1 className="sticky top-0 z-10 border-b-2 bg-white p-3 text-xl font-bold">
           Explore
         </h1>

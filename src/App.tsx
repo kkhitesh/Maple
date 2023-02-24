@@ -7,6 +7,7 @@ import { CreatePost } from "./pages/CreatePost";
 import { Sidebar } from "./components/Sidebar";
 import { Home } from "./pages/Home";
 import { Explore } from "./pages/Explore";
+import { PostDetails } from "./components/PostDetails";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/explore" element={<Explore />} />
           <Route path="/login" element={<Login />} />
           <Route path="/create" element={<CreatePost />} />
+          <Route path="/post/:id" element={<PostDetails />} />
         </Routes>
       </Router>
     </div>
