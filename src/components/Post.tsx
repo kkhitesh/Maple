@@ -31,6 +31,7 @@ interface Props {
   img?: string;
   likes?: Array<String>;
   comments?: Array<String>;
+  bookmarks?: Array<String>;
 }
 
 interface CommentProp {
@@ -43,7 +44,11 @@ const Comment = (props: CommentProp) => {
   const { username, userImg, comment } = props;
   return (
     <div className="flex items-center gap-2">
-      <img className="h-6 w-6 rounded-full object-cover" src={userImg} alt="" />
+      <img
+        className="my-2 h-6 w-6 rounded-full object-cover"
+        src={userImg}
+        alt=""
+      />
       <p className="text-sm">
         <span className="font-semibold">{username}</span> {comment}
       </p>
@@ -59,9 +64,9 @@ export const Post = (props: Props) => {
   const [user] = useAuthState(auth);
   const nav = useNavigate();
 
-  const { id, username, userImg, content, likes } = props;
+  const { id, username, userImg, content, likes, bookmarks } = props;
 
-  const likesRef = doc(db, "posts", id);
+  const postRef = doc(db, "posts", id);
 
   useEffect(() => {
     return onSnapshot(
@@ -77,22 +82,44 @@ export const Post = (props: Props) => {
     if (likes?.includes(user?.uid as string)) {
       setIsLiked(true);
     }
-  }, [likes, user]);
+    if (bookmarks?.includes(user?.uid as string)) {
+      setIsBookmarked(true);
+    }
+  }, [likes, user, bookmarks]);
 
-  console.log(comments);
-
-  const handleLikePost = async () => {
+  const handleLikePost = async (e: any) => {
+    e.stopPropagation();
     if (isLiked) {
       // remove like
-      await updateDoc(likesRef, {
+      await updateDoc(postRef, {
         likes: arrayRemove(user?.uid),
       }).then(() => setIsLiked(false));
     } else {
       // add like
-      await updateDoc(likesRef, {
+      await updateDoc(postRef, {
         likes: arrayUnion(user?.uid),
       }).then(() => setIsLiked(true));
     }
+  };
+
+  const addBookmark = async (e: any) => {
+    e.stopPropagation();
+    if (isBookmarked) {
+      // remove bookmark
+      await updateDoc(postRef, {
+        bookmarks: arrayRemove(user?.uid),
+      }).then(() => setIsBookmarked(false));
+    } else {
+      // add bookmark
+      await updateDoc(postRef, {
+        bookmarks: arrayUnion(user?.uid),
+      }).then(() => setIsBookmarked(true));
+    }
+  };
+
+  const handleClickPost = () => {
+    if (window.location.pathname === `/post/${id}`) return;
+    nav(`/post/${id}`);
   };
 
   const sendComment = async (e: any) => {
@@ -111,7 +138,10 @@ export const Post = (props: Props) => {
   };
 
   return (
-    <div className="flex gap-5 border-b-2 p-5 hover:bg-[rgba(0,0,0,5%)]">
+    <div
+      className="flex gap-5 border-b-2 p-5 hover:bg-[rgba(0,0,0,5%)]"
+      onClick={handleClickPost}
+    >
       {/* header  */}
       <div>
         <img
@@ -124,24 +154,7 @@ export const Post = (props: Props) => {
         <h2 className="cursor-pointer text-lg font-bold hover:underline">
           {username}
         </h2>
-        <p
-          onClick={() => {
-            window.location.href.indexOf("post") != -1 &&
-              nav(`/post/${id}`, {
-                state: {
-                  id,
-                  username,
-                  userImg,
-                  content,
-                  img: props.img,
-                  likes,
-                  comments,
-                },
-              });
-          }}
-        >
-          {content}
-        </p>
+        <p>{content}</p>
         {props.img && (
           <img
             className="my-5 h-64 w-full rounded-xl object-cover"
@@ -166,12 +179,9 @@ export const Post = (props: Props) => {
           </div>
           <div>
             {isBookmarked ? (
-              <BsFillBookmarkFill
-                color="skyblue"
-                onClick={() => setIsBookmarked(!isBookmarked)}
-              />
+              <BsFillBookmarkFill color="skyblue" onClick={addBookmark} />
             ) : (
-              <BsBookmark onClick={() => setIsBookmarked(!isBookmarked)} />
+              <BsBookmark onClick={addBookmark} />
             )}
           </div>
         </div>

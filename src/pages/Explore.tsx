@@ -33,11 +33,11 @@ export const Explore = () => {
 
   return (
     <div className="flex w-full">
-      <div className="w-full overflow-y-scroll border-2 lg:w-2/3">
+      <div className="w-full overflow-y-scroll border-2">
         <h1 className="sticky top-0 z-10 border-b-2 bg-white p-3 text-xl font-bold">
           Explore
         </h1>
-        <div className="my-2 mx-4 flex items-center justify-around">
+        {/* <div className="my-2 mx-4 flex items-center justify-around">
           <div className="flex w-full items-center gap-3 rounded-full bg-[rgba(0,0,0,5%)] px-4 py-3">
             <BiSearch className="text-2xl text-[rgba(0,0,0,40%)]" />
             <input
@@ -46,7 +46,7 @@ export const Explore = () => {
               className="bg-transparent focus:outline-none"
             />
           </div>
-        </div>
+        </div> */}
         {loading ? (
           <div>
             <LoadingPost />
@@ -64,11 +64,11 @@ export const Explore = () => {
               img={post.data().img}
               likes={post.data().likes}
               comments={post.data().comments}
+              bookmarks={post.data().bookmarks}
             />
           ))
         )}
       </div>
-      <Suggestions />
     </div>
   );
 };

@@ -8,6 +8,7 @@ import { Sidebar } from "./components/Sidebar";
 import { Home } from "./pages/Home";
 import { Explore } from "./pages/Explore";
 import { PostDetails } from "./components/PostDetails";
+import { Suggestions } from "./components/Suggestions";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/create" element={<CreatePost />} />
           <Route path="/post/:id" element={<PostDetails />} />
         </Routes>
+        <Suggestions />
       </Router>
     </div>
   );

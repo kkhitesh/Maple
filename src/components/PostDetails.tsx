@@ -1,32 +1,39 @@
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, DocumentData, onSnapshot } from "firebase/firestore";
 import { useState, useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { db } from "../config/firebase";
 import { Post } from "./Post";
-import { Suggestions } from "./Suggestions";
 
 export const PostDetails = () => {
-  const { state } = useLocation();
+  const { id } = useParams();
 
-  const { id, username, userImg, content, img, likes, comments } = state;
+  // const {  username, userImg, content, img, likes, comments } = state;
+
+  const [post, setPost] = useState<DocumentData>({});
+
+  //ts-nocheck
+  useEffect(() => {
+    return onSnapshot(doc(db, "posts", id), (snapshot) =>
+      setPost(snapshot.data())
+    );
+  }, [db]);
 
   return (
     <div className="flex w-full">
-      <div className="w-full overflow-y-scroll border-2 lg:w-2/3">
+      <div className="w-full overflow-y-scroll border-2">
         <h1 className="sticky top-0 z-10 border-b-2 bg-white p-3 text-xl font-bold">
           Post
         </h1>
         <Post
-          id={id}
-          username={username}
-          userImg={userImg}
-          content={content}
-          img={img}
-          likes={likes}
-          comments={comments}
+          id={id as string}
+          username={post?.username}
+          userImg={post?.userImg}
+          content={post?.caption}
+          img={post?.img}
+          likes={post?.likes}
+          comments={post?.comments}
         />
       </div>
-      <Suggestions />
     </div>
   );
 };

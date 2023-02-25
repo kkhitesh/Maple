@@ -25,7 +25,7 @@ export const Sidebar = () => {
   const [user] = useAuthState(auth);
 
   return (
-    <div className="text-md flex h-full w-1/3 flex-col justify-between bg-light p-5 md:p-10 md:pl-24">
+    <div className="text-md flex h-full w-1/3 flex-col justify-between bg-light p-5 md:p-10 md:pl-20">
       <Modal
         showModal={showModal}
         setShowModal={setShowModal}
@@ -91,8 +91,7 @@ export const Sidebar = () => {
                   alt="img"
                 />
                 <div className="hidden md:block">
-                  <h1 className="font-semibold">{user?.displayName}</h1>
-                  <p>@username</p>
+                  <h1 className="text-md font-semibold">{user?.displayName}</h1>
                 </div>
               </div>
               <BiExit

@@ -1,14 +1,13 @@
 import {
   collection,
   DocumentData,
-  limit,
   onSnapshot,
-  orderBy,
   query,
 } from "firebase/firestore";
 import { useState, useEffect } from "react";
-import { BiSearch } from "react-icons/bi";
+import { Link } from "react-router-dom";
 import { db } from "../config/firebase";
+import { SearchBar } from "./SearchBar";
 
 interface UserProps {
   username: string;
@@ -35,42 +34,31 @@ const RecProfile = (props: UserProps) => {
 export const Suggestions = () => {
   const [users, setUsers] = useState<DocumentData[]>([]);
 
+  const recUsers = users?.sort(() => 0.5 - Math.random()).slice(0, 3);
+
   useEffect(() => {
-    return onSnapshot(
-      query(collection(db, "users"), orderBy("username"), limit(3)),
-      (snapshot) => {
-        console.log(snapshot);
-        return setUsers(snapshot.docs);
-      }
-    );
+    return onSnapshot(query(collection(db, "users")), (snapshot) => {
+      return setUsers(snapshot.docs);
+    });
   }, [db]);
 
   return (
-    <div className="mr-10 hidden w-1/3 p-4 lg:block">
-      {window.location.pathname !== "/explore" && (
-        <div className="flex items-center justify-around ">
-          <div className="flex w-full items-center gap-3 rounded-full bg-[rgba(0,0,0,5%)] px-4 py-3">
-            <BiSearch className="text-2xl text-[rgba(0,0,0,40%)]" />
-            <input
-              type="text"
-              placeholder="Search"
-              className="bg-transparent focus:outline-none"
-            />
-          </div>
-        </div>
-      )}
+    <div className="mr-10 hidden w-1/2 p-4 lg:block">
+      {window.location.pathname !== "/search" && <SearchBar data={users} />}
       <div className="mt-4 w-full rounded-xl bg-[rgba(0,0,0,3%)]">
         <h2 className="px-4 py-2 text-xl font-bold ">Who to Follow</h2>
-        {users.map((user) => (
+        {recUsers.map((user) => (
           <RecProfile
             key={user.id}
             username={user.data().username}
             userImg={user.data().userImg}
           />
         ))}
-        <h3 className="transition-color rounded-b-xl p-4 text-brand duration-1000 ease-out hover:bg-[rgba(0,0,0,7%)]">
-          Show More{" "}
-        </h3>
+        <Link to="/search">
+          <h3 className="transition-color rounded-b-xl p-4 text-brand duration-1000 ease-out hover:bg-[rgba(0,0,0,7%)]">
+            Show More{" "}
+          </h3>
+        </Link>
       </div>
     </div>
   );
