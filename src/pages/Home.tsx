@@ -1,9 +1,5 @@
-import { useEffect } from "react";
-import { addDoc, collection, doc, getDoc } from "firebase/firestore";
 import { LoadingPost } from "../components/LoadingPost";
 import { Post } from "../components/Post";
-import { Suggestions } from "../components/Suggestions";
-import { auth, db } from "../config/firebase";
 
 const postDetails = {
   username: "John Doe",
@@ -13,8 +9,6 @@ const postDetails = {
 };
 
 export const Home = () => {
-  const usersRef = collection(db, "users");
-
   return (
     <div className="flex w-full">
       <div className="w-full overflow-y-scroll border-2 ">
@@ -31,7 +25,6 @@ export const Home = () => {
         <LoadingPost />
         <LoadingPost />
       </div>
-      {/* <Suggestions /> */}
     </div>
   );
 };

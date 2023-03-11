@@ -4,11 +4,14 @@ import {
   onSnapshot,
   orderBy,
   query,
+  where,
 } from "firebase/firestore";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { LoadingPost } from "../components/LoadingPost";
 import { Post } from "../components/Post";
-import { db } from "../config/firebase";
+import { auth, db } from "../config/firebase";
+
 interface Post {
   id: string;
   username: string;
@@ -18,22 +21,31 @@ interface Post {
   timestamp: Date;
 }
 
-export const Explore = () => {
+export const Bookmarks = () => {
   const [posts, setPosts] = useState<DocumentData[]>([]);
   const [loading, setLoading] = useState(false);
+  const [user] = useAuthState(auth);
+
+  console.log(user?.uid);
 
   useEffect(() => {
     return onSnapshot(
-      query(collection(db, "posts"), orderBy("timestamp", "desc")),
+      query(
+        collection(db, "posts"),
+        where("bookmarks", "array-contains", user?.uid),
+        orderBy("timestamp", "desc")
+      ),
       (snapshot) => setPosts(snapshot.docs)
     );
   }, [db]);
+
+  console.log(posts);
 
   return (
     <div className="flex w-full">
       <div className="w-full overflow-y-scroll border-2">
         <h1 className="sticky top-0 z-10 border-b-2 bg-white p-3 text-xl font-bold">
-          Explore
+          Bookmarks
         </h1>
         {loading ? (
           <div>
