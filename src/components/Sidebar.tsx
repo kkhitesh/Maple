@@ -66,7 +66,7 @@ export const Sidebar = () => {
           <span className="hidden md:block">Bookmarks</span>
         </Link>
         <Link
-          to="/profile"
+          to={`/user/${user?.uid}`}
           className="mt-2 flex w-max items-center gap-3 p-3 pr-10 hover:rounded-full hover:bg-[rgba(0,0,0,5%)]"
         >
           <BiUserCircle />

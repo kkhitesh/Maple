@@ -5,28 +5,37 @@ import {
   query,
 } from "firebase/firestore";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { db } from "../config/firebase";
 import { SearchBar } from "./SearchBar";
 
 interface UserProps {
+  uid: string;
   username: string;
   userImg: string;
 }
 
 const RecProfile = (props: UserProps) => {
-  const { username, userImg } = props;
+  const { uid, username, userImg } = props;
+  const nav = useNavigate();
+
+  const goToProfile = () => {
+    nav(`/user/${uid}`);
+  };
+
   return (
     <div className="transition-color flex items-center justify-between p-4 duration-1000 ease-out hover:bg-[rgba(0,0,0,7%)]">
       <div className="flex gap-5">
-        {/* <div className="h-12 w-12 rounded-full bg-brand"></div> */}
         <img src={userImg} className="h-12 w-12 rounded-full" alt="" />
         <div>
-          <h1 className="font-semibold">{username}</h1>
-          <p>@john</p>
+          <h1 className="font-semibold" onClick={goToProfile}>
+            {username}
+          </h1>
         </div>
       </div>
-      <div className="rounded-full bg-gray-800 p-2 px-5 text-white">Follow</div>
+      <div className="cursor-pointer rounded-full bg-gray-800 p-2 px-5 text-white">
+        Follow
+      </div>
     </div>
   );
 };
@@ -50,6 +59,7 @@ export const Suggestions = () => {
         {recUsers.map((user) => (
           <RecProfile
             key={user.id}
+            uid={user.id}
             username={user.data().username}
             userImg={user.data().userImg}
           />

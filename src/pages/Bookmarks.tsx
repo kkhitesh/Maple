@@ -8,6 +8,8 @@ import {
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { BiLeftArrowAlt } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 import { LoadingPost } from "../components/LoadingPost";
 import { Post } from "../components/Post";
 import { auth, db } from "../config/firebase";
@@ -25,8 +27,7 @@ export const Bookmarks = () => {
   const [posts, setPosts] = useState<DocumentData[]>([]);
   const [loading, setLoading] = useState(false);
   const [user] = useAuthState(auth);
-
-  console.log(user?.uid);
+  const nav = useNavigate();
 
   useEffect(() => {
     return onSnapshot(
@@ -39,12 +40,11 @@ export const Bookmarks = () => {
     );
   }, [db]);
 
-  console.log(posts);
-
   return (
     <div className="flex w-full">
       <div className="w-full overflow-y-scroll border-2">
-        <h1 className="sticky top-0 z-10 border-b-2 bg-white p-3 text-xl font-bold">
+        <h1 className="sticky top-0 z-10 flex items-center gap-3 border-b-2 bg-white p-3 text-xl font-bold">
+          <BiLeftArrowAlt onClick={() => nav(-1)} size={24} />
           Bookmarks
         </h1>
         {loading ? (

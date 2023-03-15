@@ -6,6 +6,8 @@ import {
   query,
 } from "firebase/firestore";
 import { useState, useEffect } from "react";
+import { BiLeftArrowAlt } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 import { LoadingPost } from "../components/LoadingPost";
 import { Post } from "../components/Post";
 import { db } from "../config/firebase";
@@ -21,6 +23,7 @@ interface Post {
 export const Explore = () => {
   const [posts, setPosts] = useState<DocumentData[]>([]);
   const [loading, setLoading] = useState(false);
+  const nav = useNavigate();
 
   useEffect(() => {
     return onSnapshot(
@@ -32,7 +35,8 @@ export const Explore = () => {
   return (
     <div className="flex w-full">
       <div className="w-full overflow-y-scroll border-2">
-        <h1 className="sticky top-0 z-10 border-b-2 bg-white p-3 text-xl font-bold">
+        <h1 className="sticky top-0 z-10 flex items-center gap-3 border-b-2 bg-white p-3 text-xl font-bold">
+          <BiLeftArrowAlt onClick={() => nav(-1)} size={24} />
           Explore
         </h1>
         {loading ? (

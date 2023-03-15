@@ -1,11 +1,13 @@
 import { doc, DocumentData, onSnapshot } from "firebase/firestore";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { BiLeftArrowAlt } from "react-icons/bi";
+import { useNavigate, useParams } from "react-router-dom";
 import { db } from "../config/firebase";
 import { Post } from "./Post";
 
 export const PostDetails = () => {
   const { id } = useParams();
+  const nav = useNavigate();
 
   // const {  username, userImg, content, img, likes, comments } = state;
 
@@ -21,7 +23,8 @@ export const PostDetails = () => {
   return (
     <div className="flex w-full">
       <div className="w-full overflow-y-scroll border-2">
-        <h1 className="sticky top-0 z-10 border-b-2 bg-white p-3 text-xl font-bold">
+        <h1 className="sticky top-0 z-10 flex items-center gap-3 border-b-2 bg-white p-3 text-xl font-bold">
+          <BiLeftArrowAlt onClick={() => nav(-1)} size={24} />
           Post
         </h1>
         <Post

@@ -10,6 +10,7 @@ import { Explore } from "./pages/Explore";
 import { PostDetails } from "./components/PostDetails";
 import { Suggestions } from "./components/Suggestions";
 import { Bookmarks } from "./pages/Bookmarks";
+import { Profile } from "./pages/Profile";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/create" element={<CreatePost />} />
           <Route path="/post/:id" element={<PostDetails />} />
+          <Route path="/user/:id" element={<Profile />} />
         </Routes>
         <Suggestions />
       </Router>
