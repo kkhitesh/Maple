@@ -51,13 +51,13 @@ export const Sidebar = () => {
           <BiCompass />
           <span className="hidden md:block">Explore</span>
         </Link>
-        <Link
+        {/* <Link
           to="/search"
           className="mt-2 flex w-max items-center gap-3 p-3 pr-10 hover:rounded-full hover:bg-[rgba(0,0,0,5%)]"
         >
           <BiSearch />
           <span className="hidden md:block">Search</span>
-        </Link>
+        </Link> */}
         <Link
           to="/bookmarks"
           className="mt-2 flex w-max items-center gap-3 p-3 pr-10 hover:rounded-full hover:bg-[rgba(0,0,0,5%)]"

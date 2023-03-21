@@ -25,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 
 interface Props {
   id: string;
+  userId: string;
   username: string;
   userImg: string;
   content: string;
@@ -64,7 +65,7 @@ export const Post = (props: Props) => {
   const [user] = useAuthState(auth);
   const nav = useNavigate();
 
-  const { id, username, userImg, content, likes, bookmarks } = props;
+  const { id, userId, username, userImg, content, likes, bookmarks } = props;
 
   const postRef = doc(db, "posts", id);
 
@@ -137,6 +138,11 @@ export const Post = (props: Props) => {
     });
   };
 
+  const goToProfile = (e: any) => {
+    e.stopPropagation();
+    nav(`/user/${userId}`);
+  };
+
   return (
     <div
       className="flex gap-5 border-b-2 p-5 hover:bg-[rgba(0,0,0,5%)]"
@@ -151,7 +157,10 @@ export const Post = (props: Props) => {
         />
       </div>
       <div className="w-full pr-5">
-        <h2 className="cursor-pointer text-lg font-bold hover:underline">
+        <h2
+          className="cursor-pointer text-lg font-bold hover:underline"
+          onClick={goToProfile}
+        >
           {username}
         </h2>
         <p>{content}</p>

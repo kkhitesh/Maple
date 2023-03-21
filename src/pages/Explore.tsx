@@ -13,6 +13,7 @@ import { Post } from "../components/Post";
 import { db } from "../config/firebase";
 interface Post {
   id: string;
+  userId: string;
   username: string;
   userImg: string;
   caption: string;
@@ -50,6 +51,7 @@ export const Explore = () => {
             <Post
               key={post.id}
               id={post.id}
+              userId={post.data().userId}
               username={post.data().username}
               userImg={post.data().userImg}
               content={post.data().caption}

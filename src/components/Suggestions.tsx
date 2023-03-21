@@ -1,26 +1,63 @@
 import {
+  arrayRemove,
+  arrayUnion,
   collection,
+  doc,
   DocumentData,
   onSnapshot,
   query,
+  updateDoc,
 } from "firebase/firestore";
 import { useState, useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useNavigate } from "react-router-dom";
-import { db } from "../config/firebase";
+import { auth, db } from "../config/firebase";
 import { SearchBar } from "./SearchBar";
 
 interface UserProps {
   uid: string;
   username: string;
   userImg: string;
+  followers: string[];
+  following: string[];
 }
 
 const RecProfile = (props: UserProps) => {
-  const { uid, username, userImg } = props;
+  const { uid, username, userImg, followers, following } = props;
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
+  const [userAuth] = useAuthState(auth);
+
   const nav = useNavigate();
+
+  useEffect(() => {
+    if (followers?.includes(uid)) {
+      setIsFollowing(true);
+    }
+  }, [userAuth?.uid]);
+
+  const userRef = doc(db, "users", uid);
+  const userAuthRef = doc(db, "users", userAuth?.uid);
 
   const goToProfile = () => {
     nav(`/user/${uid}`);
+  };
+
+  const handleFollow = async () => {
+    if (isFollowing) {
+      await updateDoc(userRef, {
+        followers: arrayRemove(userAuth?.uid),
+      }).then(() => setIsFollowing(false));
+      await updateDoc(userAuthRef, {
+        following: arrayRemove(uid),
+      });
+    } else {
+      await updateDoc(userRef, {
+        followers: arrayUnion(userAuth?.uid),
+      }).then(() => setIsFollowing(true));
+      await updateDoc(userAuthRef, {
+        following: arrayUnion(uid),
+      });
+    }
   };
 
   return (
@@ -33,8 +70,13 @@ const RecProfile = (props: UserProps) => {
           </h1>
         </div>
       </div>
-      <div className="cursor-pointer rounded-full bg-gray-800 p-2 px-5 text-white">
-        Follow
+      <div
+        className={`cursor-pointer rounded-full bg-gray-800 p-2 px-5 text-white ${
+          isFollowing && "bg-gray-800/80"
+        }`}
+        onClick={handleFollow}
+      >
+        {isFollowing ? "Following" : "Follow"}
       </div>
     </div>
   );
@@ -60,6 +102,8 @@ export const Suggestions = () => {
           <RecProfile
             key={user.id}
             uid={user.id}
+            followers={user.data().followers}
+            following={user.data().following}
             username={user.data().username}
             userImg={user.data().userImg}
           />

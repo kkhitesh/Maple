@@ -1,15 +1,19 @@
 import {
+  arrayRemove,
+  arrayUnion,
   collection,
   doc,
   DocumentData,
   onSnapshot,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { BiLeftArrowAlt } from "react-icons/bi";
 import { useNavigate, useParams } from "react-router-dom";
+import EditProfileModal from "../components/EditProfileModal";
 import { Post } from "../components/Post";
 import { auth, db } from "../config/firebase";
 
@@ -17,8 +21,14 @@ export const Profile = () => {
   const { id } = useParams();
   const [user, setUser] = useState<DocumentData>({});
   const [posts, setPosts] = useState<DocumentData[]>([]);
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState(false);
+
   const nav = useNavigate();
   const [userAuth] = useAuthState(auth);
+
+  const userRef = doc(db, "users", id);
+  const userAuthRef = doc(db, "users", userAuth?.uid);
 
   useEffect(() => {
     return onSnapshot(query(doc(db, "users", id)), (snapshot) =>
@@ -33,12 +43,42 @@ export const Profile = () => {
     );
   }, [db, id]);
 
-  const handleFollow = () => {};
+  useEffect(() => {
+    if (user.followers?.includes(userAuth?.uid)) {
+      setIsFollowing(true);
+    }
+  }, [userAuth?.uid, user.followers]);
 
-  const handleEditProfile = () => {};
+  const handleFollow = async () => {
+    if (isFollowing) {
+      await updateDoc(userRef, {
+        followers: arrayRemove(userAuth?.uid),
+      }).then(() => setIsFollowing(false));
+      await updateDoc(userAuthRef, {
+        following: arrayRemove(id),
+      });
+    } else {
+      await updateDoc(userRef, {
+        followers: arrayUnion(userAuth?.uid),
+      }).then(() => setIsFollowing(true));
+      await updateDoc(userAuthRef, {
+        following: arrayUnion(id),
+      });
+    }
+  };
+
+  const handleEditProfile = () => {
+    setShowModal(true);
+  };
 
   return (
     <div className="flex w-full">
+      <EditProfileModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        onClose={() => setShowModal(false)}
+        user={userAuth}
+      />
       <div className="w-full overflow-y-scroll border-2">
         <h1 className="sticky top-0 z-10 flex items-center gap-3 border-b-2 bg-white p-3 text-xl font-bold">
           <BiLeftArrowAlt onClick={() => nav(-1)} size={24} />
@@ -62,10 +102,12 @@ export const Profile = () => {
               </div>
               {id !== userAuth?.uid ? (
                 <div
-                  className="mt-7 h-10 cursor-pointer rounded-full bg-gray-800 p-2 px-5 text-white"
+                  className={`mt-7 h-10 cursor-pointer rounded-full bg-gray-800 p-2 px-5 text-white ${
+                    isFollowing && "bg-gray-800/80"
+                  }`}
                   onClick={handleFollow}
                 >
-                  Follow
+                  {isFollowing ? "Following" : "Follow"}
                 </div>
               ) : (
                 <div

@@ -29,6 +29,7 @@ export const PostDetails = () => {
         </h1>
         <Post
           id={id as string}
+          userId={post?.userId}
           username={post?.username}
           userImg={post?.userImg}
           content={post?.caption}
