@@ -56,6 +56,7 @@ export const Bookmarks = () => {
         ) : (
           posts.map((post) => (
             <Post
+              userId={post.data().userId}
               key={post.id}
               id={post.id}
               username={post.data().username}

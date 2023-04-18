@@ -18,7 +18,7 @@ export const Home = () => {
   const [userAuth] = useAuthState(auth);
 
   const getUserData = () => {
-    return onSnapshot(doc(db, "users", userAuth?.uid), (snapshot) => {
+    return onSnapshot(doc(db, "users", userAuth?.uid as string), (snapshot) => {
       const data = snapshot.data();
       return onSnapshot(
         query(

@@ -5,6 +5,7 @@ import {
   doc,
   DocumentData,
   onSnapshot,
+  Query,
   query,
   updateDoc,
   where,
@@ -27,11 +28,11 @@ export const Profile = () => {
   const nav = useNavigate();
   const [userAuth] = useAuthState(auth);
 
-  const userRef = doc(db, "users", id);
-  const userAuthRef = doc(db, "users", userAuth?.uid);
+  const userRef = doc(db, "users", id as string);
+  const userAuthRef = doc(db, "users", userAuth?.uid as string);
 
   useEffect(() => {
-    return onSnapshot(query(doc(db, "users", id)), (snapshot) =>
+    return onSnapshot(query(doc(db, "users", id as string)), (snapshot) =>
       setUser(snapshot.data())
     );
   }, [db, id]);
@@ -133,6 +134,7 @@ export const Profile = () => {
               <Post
                 key={post.id}
                 id={post.id}
+                userId={post.data().userId}
                 username={post.data().username}
                 userImg={post.data().userImg}
                 content={post.data().caption}
