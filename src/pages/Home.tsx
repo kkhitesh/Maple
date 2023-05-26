@@ -12,13 +12,21 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { LoadingPost } from "../components/LoadingPost";
 import { Post } from "../components/Post";
 import { auth, db } from "../config/firebase";
+import { useNavigate } from "react-router-dom";
 
 export const Home = () => {
   const [posts, setPosts] = useState<DocumentData[]>([]);
-  const [userAuth] = useAuthState(auth);
+  const [userAuth, loading, error] = useAuthState(auth);
+
+  const nav = useNavigate();
 
   const getUserData = () => {
+    console.log("hello");
+    if (loading) return;
+    if (!userAuth) return nav("/login");
+    console.log(userAuth?.uid);
     return onSnapshot(doc(db, "users", userAuth?.uid as string), (snapshot) => {
+      console.log("hello1");
       const data = snapshot.data();
       return onSnapshot(
         query(
@@ -32,8 +40,12 @@ export const Home = () => {
   };
 
   useEffect(() => {
-    return getUserData();
-  }, [db]);
+    try {
+      return getUserData();
+    } catch (err) {
+      console.log(err);
+    }
+  }, [db, userAuth]);
 
   console.log(posts);
 

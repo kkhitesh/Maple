@@ -25,11 +25,13 @@ interface Post {
 
 export const Bookmarks = () => {
   const [posts, setPosts] = useState<DocumentData[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [user] = useAuthState(auth);
+  // const [loading, setLoading] = useState(false);
+  const [user, loading, erro] = useAuthState(auth);
   const nav = useNavigate();
 
   useEffect(() => {
+    if (loading) return;
+    if (!user) return nav("/login");
     return onSnapshot(
       query(
         collection(db, "posts"),
@@ -38,7 +40,7 @@ export const Bookmarks = () => {
       ),
       (snapshot) => setPosts(snapshot.docs)
     );
-  }, [db]);
+  }, [db, user]);
 
   return (
     <div className="flex w-full">
