@@ -65,7 +65,7 @@ const RecProfile = (props: UserProps) => {
       <div className="flex gap-5">
         <img src={userImg} className="h-12 w-12 rounded-full" alt="" />
         <div>
-          <h1 className="font-semibold" onClick={goToProfile}>
+          <h1 className="cursor-pointer font-semibold" onClick={goToProfile}>
             {username}
           </h1>
         </div>

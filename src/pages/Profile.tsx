@@ -55,7 +55,7 @@ export const Profile = () => {
     if (user.followers?.includes(userAuth?.uid)) {
       setIsFollowing(true);
     }
-  }, [userAuth?.uid, user.followers]);
+  }, [userAuth?.uid, user?.followers]);
 
   const handleFollow = async () => {
     if (isFollowing) {
@@ -106,10 +106,10 @@ export const Profile = () => {
                 <div className="flex items-center justify-between p-5">
                   <div>
                     <img
-                      src={user.userImg}
-                      className="h-25 w-25 rounded-full border-4 border-brand/70 p-1"
+                      src={user?.userImg}
+                      className="h-20 w-20 rounded-full border-4 border-brand/70 object-cover p-1"
                     />
-                    <h1 className="text-xl font-semibold">{user.username}</h1>
+                    <h1 className="text-xl font-semibold">{user?.username}</h1>
                   </div>
                   {id !== userAuth?.uid ? (
                     <div
@@ -129,7 +129,7 @@ export const Profile = () => {
                     </div>
                   )}
                 </div>
-                <p className="px-5">{user.bio}</p>
+                <p className="px-5">{user?.bio}</p>
                 <div className="flex gap-5 px-5 py-5">
                   <span>
                     <strong>{user?.following?.length}</strong> Following

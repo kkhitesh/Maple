@@ -55,7 +55,7 @@ export const Bookmarks = () => {
             <LoadingPost />
             <LoadingPost />
           </div>
-        ) : (
+        ) : posts.length > 0 ? (
           posts.map((post) => (
             <Post
               userId={post.data().userId}
@@ -70,6 +70,11 @@ export const Bookmarks = () => {
               bookmarks={post.data().bookmarks}
             />
           ))
+        ) : (
+          <div className="flex h-full flex-col items-center justify-center">
+            <h1 className="text-2xl font-bold">No Bookmarks</h1>
+            <p className="text-gray-500">Save posts to view them here</p>
+          </div>
         )}
       </div>
     </div>

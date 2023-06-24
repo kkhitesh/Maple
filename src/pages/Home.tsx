@@ -23,10 +23,9 @@ export const Home = () => {
   const getUserData = () => {
     console.log("hello");
     if (loading) return;
-    if (!userAuth) return nav("/login");
+    if (!userAuth) return nav("/homepage");
     console.log(userAuth?.uid);
     return onSnapshot(doc(db, "users", userAuth?.uid as string), (snapshot) => {
-      console.log("hello1");
       const data = snapshot.data();
       return onSnapshot(
         query(
@@ -71,10 +70,11 @@ export const Home = () => {
             />
           ))
         ) : (
-          <div>
-            <LoadingPost />
-            <LoadingPost />
-            <LoadingPost />
+          <div className="flex h-full flex-col items-center justify-center">
+            <h1 className="text-2xl font-bold">No Posts</h1>
+            <p className="text-gray-500">
+              Follow People to see their post updates
+            </p>
           </div>
         )}
       </div>

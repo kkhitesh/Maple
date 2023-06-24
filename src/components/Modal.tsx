@@ -2,6 +2,7 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import React, { useState } from "react";
 import { BiPlus, BiPlusCircle } from "react-icons/bi";
 import { db } from "../config/firebase";
+import { toast } from "react-hot-toast";
 
 interface Props {
   showModal: boolean;
@@ -28,6 +29,7 @@ const Modal = (props: Props) => {
       comments: [],
     });
     console.log("Posted Successfully", res.id);
+    toast.success("Posted Successfully");
     setCaption("");
     setLoading(false);
     setShowModal(false);

@@ -11,10 +11,13 @@ import { PostDetails } from "./components/PostDetails";
 import { Suggestions } from "./components/Suggestions";
 import { Bookmarks } from "./pages/Bookmarks";
 import { Profile } from "./pages/Profile";
+import { Toaster } from "react-hot-toast";
+import { Homepage } from "./pages/Homepage";
 
 function App() {
   return (
     <div className="App flex h-[100vh] overflow-hidden text-slate-800">
+      <Toaster />
       <Router>
         {/* <Navbar /> */}
         <Sidebar />
@@ -26,8 +29,9 @@ function App() {
           <Route path="/create" element={<CreatePost />} />
           <Route path="/post/:id" element={<PostDetails />} />
           <Route path="/user/:id" element={<Profile />} />
+          <Route path="/homepage" element={<Homepage />} />
         </Routes>
-        <Suggestions />
+        {/* <Suggestions />  */}
       </Router>
     </div>
   );
