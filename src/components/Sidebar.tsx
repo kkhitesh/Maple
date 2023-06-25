@@ -26,7 +26,7 @@ export const Sidebar = () => {
   const signUserOut = () => {
     console.log("signing out");
     signOut(auth);
-    nav("/homepage");
+    nav("/home");
   };
 
   useEffect(() => {

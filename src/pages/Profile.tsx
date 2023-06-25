@@ -31,13 +31,11 @@ export const Profile = () => {
   const [userAuth, loading, error] = useAuthState(auth);
 
   const userRef = doc(db, "users", id as string);
-  let userAuthRef;
+  let userAuthRef = doc(db, "users", userAuth?.uid as string);
 
   useEffect(() => {
     if (loading) return;
     if (!userAuth) return nav("/login");
-
-    userAuthRef = doc(db, "users", userAuth?.uid as string);
 
     return onSnapshot(userRef, (doc) => {
       setUser(doc.data());
