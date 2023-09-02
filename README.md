@@ -1,3 +1,4 @@
 # Maple
 
-![image](https://github.com/kkhitesh/Maple/assets/61322830/d49ce0fa-12bd-4510-9a57-8656c9976edb)
+![image](https://github.com/kkhitesh/Maple/assets/61322830/8979ad81-36b1-47ae-8766-61feddcd391a)
+
